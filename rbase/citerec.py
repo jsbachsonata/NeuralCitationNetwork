@@ -7,7 +7,7 @@
 import atexit
 import h5py
 import numpy as np
-import cPickle
+import pickle as cPickle
 from os.path import isfile
 
 

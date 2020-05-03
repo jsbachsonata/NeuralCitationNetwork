@@ -14,15 +14,20 @@ parser.add_argument('-r', '--restore', help='optional, only if restoring', type=
                     default=None)
 parser.add_argument('-i', '--input', help='Data input filename', type=str)
 
-args = parser.parse_args()
-
+# args = parser.parse_args()
+import easydict
+args = easydict.EasyDict({
+    "gpu": "0",
+    "restore": None,
+    "input": "../content/drive/My Drive/seq_data.h5py"
+})
 import os
 
-os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
+# os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 
 import sys
 import threading
-import cPickle
+import pickle as cPickle
 from logging.config import dictConfig
 import logging
 import json
@@ -31,8 +36,9 @@ import json
 import tensorflow as tf
 import numpy as np
 
+sys.path.append('/content/NeuralCitationNetwork/')
 from rbase.citerec import PAD_TOKEN, GO_TOKEN, END_TOKEN, CitationContextDataset
-import rbase.seq2seq import DeepCNNtoRNN
+from rbase.seq2seq import DeepCNNtoRNN
 
 DOC_COUNT = 4258383
 
@@ -325,7 +331,7 @@ def create_exp_directory(cwd=''):
             created = True
             break
     if not created:
-        print 'Could not create directory for experiments'
+        print('Could not create directory for experiments')
         exit(-1)
     return path + '/'
 
@@ -536,7 +542,7 @@ try:
                   os.path.join(config.save_directory, 'seq2seq_epoch%s.chkpt' % epoch))
 
 except KeyboardInterrupt:
-    print 'Keyboard Interrupt'
+    print('Keyboard Interrupt')
 
-print 'Done...'
+print('Done...')
 sv.coord.request_stop()
